@@ -9,7 +9,7 @@ class Solution
      */
     function twoSum($nums, $target)
     {
-        return $this->twoSum_v1($nums,$target);
+        return $this->twoSum_v2($nums,$target);
     }
     function twoSum_v1($nums,$target){
         //
@@ -22,6 +22,17 @@ class Solution
                     return [$key_1,$key_2];
                 }
             }
+        }
+        return [];
+    }
+    function twoSum_v2($nums,$target){
+        $index_map=[];
+        foreach($nums as $key=>$value){
+            $sub=$target-$value;
+            if(array_key_exists($sub,$index_map)){
+                return [$index_map[$sub],$key];
+            }
+            $index_map[$value]=$key;
         }
         return [];
     }
