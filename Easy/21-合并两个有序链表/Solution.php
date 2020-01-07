@@ -15,6 +15,12 @@ class Solution {
         return $this->mergeTwoLists_v1($l1, $l2);
     }
     function mergeTwoLists_v1($l1, $l2) {
+        if(empty($l1)){
+            return $l2;
+        }
+        if(empty($l2)){
+            return $l1;
+        }
         $now=$l1;
         do{
             if($now->next){
@@ -24,19 +30,42 @@ class Solution {
         $now->next=$l2;
         $now=$l1;
         $p=$l1;
+        //你会写归并为什么还是要冒泡？
+        //我开心，你打我呀？
         while($p->next){
             $now=$p;
+            $q=$p;
             while($now->next){
-                if($now->val>$now->next->val){
-                    $ex=$now->val;
-                    $now->val=$now->next->val;
-                    $now->next->val=$ex;
+                if($now->val<=$q->val){
+                    $q=$now;
                 }
                 $now=$now->next;
             }
+            $ex=$q->val;
+            $q->val=$p->val;
+            $p->val=$ex;
             $p=$p->next;
         }
         return $l1;
+    }
+    function mergeTwoLists_v2($l1, $l2) {
+        $result=new ListNode(0);
+        $p=$result;
+        do{
+            if(!isset($l1)&&!isset($l2)){
+            break;
+            }
+            if(isset($l1)&&(isset($l2)&&$l1->val<=$l2->val || !isset($l2))){
+                $p->next=$l1;
+                $p=$p->next;
+                $l1=$l1->next;
+            }elseif(isset($l2)){
+                $p->next=$l2;
+                $p=$p->next;
+                $l2=$l2->next;
+            }
+        }while(True);
+        return $result->next;
     }
 }
 function construct_list(array $array){
@@ -67,7 +96,7 @@ function build_input($input){
 }
 // To test 
 $solution=new Solution();
-$input="1->2->4,1->3->4";
+$input="-2->5,-9->-6->-3->-1->1->6";
 [$l1,$l2]=build_input($input);
 $l1=construct_list($l1);
 $l2=construct_list($l2);
